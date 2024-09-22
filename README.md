@@ -9,10 +9,6 @@
 
 ##Índice
 
-*[Insignias](#insignias)
-
-*[Índice](#índice)
-
 *[Descripción del proyecto](#descripción-del-proyecto)
 
 *[Estado del proyecto](#Estado-del-proyecto)
@@ -29,8 +25,6 @@
 
 * [Licencia](#licencia)
 
-*[Conclusión](#conclusión)
-
 
 
 Descripcion del proyecto:
@@ -38,22 +32,20 @@ Descripcion del proyecto:
     Este proyecto es una aplicación web de gestión de puntos y plantillas para wargames, que calculará automaticamente el coste de tu ejercito en base a sus tropas
 
 
-Estado del proyecto 🚀
-
-![Badge en Desarollo](https://img.shields.io/badge/STATUS-EN%20DESAROLLO-green)
+*[Estado del proyecto] 🚀
+Acaba de comenzar su desarrollo en el año 2024 ! 
 
 
 *[Características de la aplicación y demostración]
   Cuando el desarrollo esté mas avanzado, aquí publicaremos ejemplos del funcionamiento de la aplicacion !
 
 
-Contribución 🤝
 
+*[Acceso al proyecto]
 Si deseas acceder al desarrollo del proyecto, solo tienes que hablar con nuestro equipo ! (no hay sueldo)
 
 
-Tecnologías Utilizadas 🛠
-
+*[Tecnologías utilizadas] 🛠
 Principalmente utilizaremos los siguientes frameworks a la hora de construir nuestra aplicacion
 
     React
@@ -63,15 +55,17 @@ Principalmente utilizaremos los siguientes frameworks a la hora de construir nue
     Angular
     Sprint
     Insomnia
-
-Licencia 📄
-CC Creative Commons
-
-
-Este proyecto está bajo la licencia CC. Consulta el archivo LICENSE para obtener más información.
-
+    
+*[Personas Contribuyentes]
+Aquí podrías estar tú !
+*[Personas-Desarrolladores del Proyecto]
 Nombre del Autor
-
     [GitHub](https://github.com/antoneb)
     LinkedIn
     Twitter
+
+* [Licencia]📄
+CC Creative Commons
+Este proyecto está bajo la licencia CC. Consulta el archivo LICENSE para obtener más información.
+
+
