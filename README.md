@@ -7,8 +7,7 @@
 ![Logo wargame 3](https://upload.wikimedia.org/wikipedia/fr/4/4b/Heroes_of_Might_and_Magic_3_Logo.png)
 
 
-##Índice
-
+#Índice
 *[Descripción del proyecto](#descripción-del-proyecto)
 
 *[Estado del proyecto](#Estado-del-proyecto)
@@ -40,15 +39,18 @@ Acaba de comenzar su desarrollo en el año 2024 !
 
 
 [Características de la aplicación y demostración]
+
   Cuando el desarrollo esté mas avanzado, aquí publicaremos ejemplos del funcionamiento de la aplicacion !
 
 
 
 [Acceso al proyecto]
+
 Si deseas acceder al desarrollo del proyecto, solo tienes que hablar con nuestro equipo ! (no hay sueldo)
 
 
 [Tecnologías utilizadas] 🛠
+
 Principalmente utilizaremos los siguientes frameworks a la hora de construir nuestra aplicacion
 
     React
