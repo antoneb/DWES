@@ -39,10 +39,11 @@ Descripcion del proyecto:
 
 
 Estado del proyecto 🚀
+
 ![Badge en Desarollo](https://img.shields.io/badge/STATUS-EN%20DESAROLLO-green)
 
 
-*[Características de la aplicación y demostración](#Características-de-la-aplicación-y-demostración)
+*[Características de la aplicación y demostración]
   Cuando el desarrollo esté mas avanzado, aquí publicaremos ejemplos del funcionamiento de la aplicacion !
 
 
