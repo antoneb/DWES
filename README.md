@@ -67,8 +67,12 @@ Aquí podrías estar tú !
 
 [Personas-Desarrolladores del Proyecto]
 Anton Espiñeira
+
+    
     [GitHub](https://github.com/antoneb)
+    
     LinkedIn
+    
     Twitter
 
 [Licencia]📄
