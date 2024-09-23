@@ -1,7 +1,12 @@
 hoola mis amigos como stan
 linea 2 nueva
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 cambio definitivo en rama master
+=======
+linea 3 nueva tercer commit
+Esto es una modificacin que vamos a stashear
+>>>>>>> Stashed changes
 =======
 linea 3 nueva tercer commit
 Esto es una modificacin que vamos a stashear
