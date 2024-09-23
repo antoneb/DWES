@@ -9,5 +9,3 @@ Esto es una modificacin que vamos a stashear
 >>>>>>> Stashed changes
 =======
 linea 3 nueva tercer commit
-Esto es una modificacin que vamos a stashear
->>>>>>> Stashed changes
