@@ -66,7 +66,7 @@ Principalmente utilizaremos los siguientes frameworks a la hora de construir nue
 Aquí podrías estar tú !
 
 [Personas-Desarrolladores del Proyecto]
-Nombre del Autor
+Anton Espiñeira
     [GitHub](https://github.com/antoneb)
     LinkedIn
     Twitter
