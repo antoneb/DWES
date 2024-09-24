@@ -16,25 +16,25 @@
 > [!NOTE]
 > Todo lo que ves aqui escrito es un WIP
 
-*[Descripción del proyecto](#descripción-del-proyecto) 
+*[Descripción del proyecto](#descripción) 
 
-*[Estado del proyecto](#Estado-del-proyecto)
+*[Estado del proyecto](#Estado)
 
-*[Características de la aplicación y demostración](#Características-de-la-aplicación-y-demostración)
+*[Características de la aplicación y demostración](#Características)
 
-*[Acceso al proyecto](#acceso-proyecto)
+*[Acceso al proyecto](#acceso)
 
-*[Tecnologías utilizadas](#tecnologías-utilizadas)
+*[Tecnologías utilizadas](#tecnologías)
 
-*[Personas Contribuyentes](#personas-contribuyentes)
+*[Personas Contribuyentes](#contribuyentes)
 
-*[Personas-Desarrolladores del Proyecto](#personas-desarrolladores)
+*[Personas-Desarrolladores del Proyecto](#desarrolladores)
 
 *[Licencia](#licencia)
 
 
 
-[Descripcion del proyecto:](##descripción-del-proyecto) 
+[Descripcion del proyecto:](#descripción-del-proyecto) 
 
 Este proyecto es una aplicación web de gestión de puntos y plantillas para wargames, que calculará automaticamente el coste de tu ejército en base a sus tropas
 
