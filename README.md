@@ -1,6 +1,10 @@
 # DWES 
 
-<h1 align="center"> Calculadora de puntos 
+<h1 align="center"> Calculadora de puntos  
+  
+[![Games](https://img.shields.io/badge/<GAMES>-<WORKSHOP>-<RED>.svg)](https://shields.io/)
+[![Emperor](https://img.shields.io/badge/<EMPEROR>-<PROTECTS>-<YELLOW>.svg)](https://shields.io/)
+[![Codex](https://img.shields.io/badge/<CODEX>-<COMPLIANT>-<BLUE>.svg)](https://shields.io/)
 
 ![Logo wargame 1](https://logos-world.net/wp-content/uploads/2023/05/Warhammer-Logo-1993.png)
 
@@ -11,7 +15,7 @@
 > [!NOTE]
 > Todo lo que ves aqui escrito es un WIP
 
-*[Descripción del proyecto](#descripción-del-proyecto)
+*[Descripción del proyecto](#descripción-del-proyecto) 
 
 *[Estado del proyecto](#Estado-del-proyecto)
 
