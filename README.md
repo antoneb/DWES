@@ -34,7 +34,7 @@
 
 
 
-[Descripcion del proyecto:](#descripción-del-proyecto) 
+[Descripcion del proyecto:](##descripción-del-proyecto) 
 
 Este proyecto es una aplicación web de gestión de puntos y plantillas para wargames, que calculará automaticamente el coste de tu ejército en base a sus tropas
 
