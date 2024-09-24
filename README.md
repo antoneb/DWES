@@ -55,7 +55,7 @@ Acaba de comenzar su desarrollo en el año 2024 !
 Si deseas acceder al desarrollo del proyecto, solo tienes que hablar con nuestro equipo ! (no hay sueldo)
 
 
-[Tecnologías utilizadas] 🛠
+[Tecnologías utilizadas](#tecnologías) 🛠
 
 Principalmente utilizaremos los siguientes frameworks a la hora de construir nuestra aplicacion
 
@@ -74,15 +74,15 @@ Aquí podrías estar tú !
 [Personas-Desarrolladores del Proyecto]
 Anton Espiñeira
 
+[GitHub](https://github.com/antoneb)
     
-    [GitHub](https://github.com/antoneb)
+LinkedIn
     
-    LinkedIn
-    
-    Twitter
+Twitter
 
 [Licencia]📄
-CC Creative Commons
+CC Creative Commons.
+
 Este proyecto está bajo la licencia CC. Consulta el archivo LICENSE para obtener más información.
 
 
