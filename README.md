@@ -1,11 +1,11 @@
 # DWES 
 
-<h1 align="center"> Calculadora de puntos </h1>
-
+<h1 align="center"> Calculadora de puntos 
 
 ![Logo wargame 1](https://logos-world.net/wp-content/uploads/2023/05/Warhammer-Logo-1993.png)
-<h1 align="center"> ![Logo wargame 2](https://upload.wikimedia.org/wikipedia/fr/b/ba/Blood_Bowl_%282009%29_Logo.png) </h1>
 
+![Logo wargame 2](https://upload.wikimedia.org/wikipedia/fr/b/ba/Blood_Bowl_%282009%29_Logo.png)
+</h1>
 
 #Índice
 *[Descripción del proyecto](#descripción-del-proyecto)
