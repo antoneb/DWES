@@ -32,7 +32,7 @@
 
 *[Licencia](#licencia)
 
-<a href="">#descripción> Descripcion del proyecto</a>
+<a href="#descripción"> Descripcion del proyecto</a>
 
 [Descripcion del proyecto:](#descripción) 
 
