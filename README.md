@@ -17,7 +17,7 @@
 > Todo lo que ves aqui escrito es un WIP
 
 
-*[Descripcion del proyecto](#desc)
+*[Descripcion del proyecto](/#desc)
 
 *[Estado del proyecto](#Estado)
 
@@ -39,10 +39,7 @@ Este proyecto es una aplicación web de gestión de puntos y plantillas para war
 
 [Estado del proyecto] 🚀
 
-![Badge en Desarollo](https://img.shields.io/badge/STATUS-EN%20DESAROLLO-green)
-
 Acaba de comenzar su desarrollo en el año 2024 ! 
-
 
 [Características de la aplicación y demostración]
 
