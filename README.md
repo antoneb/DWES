@@ -8,6 +8,9 @@
 </h1>
 
 #Índice
+> [!NOTE]
+> Todo lo que ves aqui escrito es un WIP
+
 *[Descripción del proyecto](#descripción-del-proyecto)
 
 *[Estado del proyecto](#Estado-del-proyecto)
@@ -28,7 +31,7 @@
 
 Descripcion del proyecto:
 
-    Este proyecto es una aplicación web de gestión de puntos y plantillas para wargames, que calculará automaticamente el coste de tu ejercito en base a sus tropas
+Este proyecto es una aplicación web de gestión de puntos y plantillas para wargames, que calculará automaticamente el coste de tu ejército en base a sus tropas
 
 
 [Estado del proyecto] 🚀
