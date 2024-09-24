@@ -35,7 +35,7 @@
 
 *[Licencia](#licencia)
 
-[Descripcion del proyecto:](#descripcion-del-proyecto) 
+## [Descripcion del proyecto:](#Desc) 
 
 Este proyecto es una aplicación web de gestión de puntos y plantillas para wargames, que calculará automaticamente el coste de tu ejército en base a sus tropas
 
@@ -66,7 +66,6 @@ Principalmente utilizaremos los siguientes frameworks a la hora de construir nue
     Sprint
     Insomnia
 
-    
 [Personas Contribuyentes]
 Aquí podrías estar tú !
 
