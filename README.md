@@ -17,7 +17,7 @@
 > Todo lo que ves aqui escrito es un WIP
 
 
-<a href="desc">Descripción del proyecto</a>
+*[Descripcion del proyecto](#desc)
 
 *[Estado del proyecto](#Estado)
 
