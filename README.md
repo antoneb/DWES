@@ -12,12 +12,14 @@
 
 </h1>
 
-#Índice
+
 > [!NOTE]
 > Todo lo que ves aqui escrito es un WIP
 
 
-*[Descripcion del proyecto](/#desc)
+*[Indice](#Index)
+
+*[Descripcion del proyecto](#Desc)
 
 *[Estado del proyecto](#Estado)
 
@@ -27,13 +29,13 @@
 
 *[Tecnologías utilizadas](#tecnologías)
 
-*[Personas Contribuyentes](#contribuyentes)
+*[Personas Contribuyentes](#contrib)
 
-*[Personas-Desarrolladores del Proyecto](#desarrolladores)
+*[Personas-Desarrolladores del Proyecto](#devs)
 
 *[Licencia](#licencia)
 
-[Descripcion del proyecto:](#desc) 
+[Descripcion del proyecto:](#descripcion-del-proyecto) 
 
 Este proyecto es una aplicación web de gestión de puntos y plantillas para wargames, que calculará automaticamente el coste de tu ejército en base a sus tropas
 
@@ -52,7 +54,7 @@ Acaba de comenzar su desarrollo en el año 2024 !
 Si deseas acceder al desarrollo del proyecto, solo tienes que hablar con nuestro equipo ! (no hay sueldo)
 
 
-[Tecnologías utilizadas](#tecnologías) 🛠
+[Tecnologías utilizadas] 🛠
 
 Principalmente utilizaremos los siguientes frameworks a la hora de construir nuestra aplicacion
 
