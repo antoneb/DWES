@@ -6,9 +6,10 @@
 [![Emperor](https://img.shields.io/badge/EMPEROR-PROTECTS-yellow.svg)](https://shields.io/)
 [![Codex](https://img.shields.io/badge/CODEX-COMPLIANT-blue.svg)](https://shields.io/)
 
+![Logo wargame 2](https://upload.wikimedia.org/wikipedia/fr/b/ba/Blood_Bowl_%282009%29_Logo.png)
 ![Logo wargame 1](https://logos-world.net/wp-content/uploads/2023/05/Warhammer-Logo-1993.png)
 
-![Logo wargame 2](https://upload.wikimedia.org/wikipedia/fr/b/ba/Blood_Bowl_%282009%29_Logo.png)
+
 </h1>
 
 #Índice
