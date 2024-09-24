@@ -32,8 +32,6 @@
 
 *[Licencia](#licencia)
 
-<a href="#descripción"> Descripcion del proyecto</a>
-
 [Descripcion del proyecto:](#descripción) 
 
 Este proyecto es una aplicación web de gestión de puntos y plantillas para wargames, que calculará automaticamente el coste de tu ejército en base a sus tropas
