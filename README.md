@@ -35,24 +35,21 @@
 
 *[Licencia](#licencia)
 
-## [Descripcion del proyecto:](#Desc) 
+[Descripcion del proyecto:](#descripcion-del-proyecto) 
 
 Este proyecto es una aplicación web de gestión de puntos y plantillas para wargames, que calculará automaticamente el coste de tu ejército en base a sus tropas
 
-[Estado del proyecto] 🚀
+[Estado del proyecto](#estado-del-proyecto) 🚀
 
 Acaba de comenzar su desarrollo en el año 2024 ! 
 
 [Características de la aplicación y demostración]
 
-  Cuando el desarrollo esté mas avanzado, aquí publicaremos ejemplos del funcionamiento de la aplicacion !
-
-
+Cuando el desarrollo esté mas avanzado, aquí publicaremos ejemplos del funcionamiento de la aplicacion !
 
 [Acceso al proyecto]
 
 Si deseas acceder al desarrollo del proyecto, solo tienes que hablar con nuestro equipo ! (no hay sueldo)
-
 
 [Tecnologías utilizadas] 🛠
 
