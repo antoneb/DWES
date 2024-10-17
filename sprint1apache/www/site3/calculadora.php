@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 
 <body>
-    <?php
-    function misMuertos() {}
-    ?>
+
     <h1>Calculadora</h1>
     <p>Realiza las operaciones indicadas</p>
 
