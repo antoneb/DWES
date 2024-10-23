@@ -7,8 +7,9 @@ $db = mysqli_connect('localhost', 'root', '1234', 'dbLibrosAnton') or die('Fail'
     <?php
     $libro_id = $_POST['libro_id'];
     $comentario = $_POST['new_comment'];
-    $query = "INSERT INTO tComentarios(comentario, libro_id, usuario_id)
-VALUES ('" . $comentario . "'," . $libro_id . ",NULL)";
+    $fechaPost = time();
+    $query = "INSERT INTO tComentarios(comentario, fechaPost, libro_id, usuario_id)
+VALUES ('" . $comentario . "',CURRENT_TIMESTAMP," . $libro_id . ",NULL)";
     mysqli_query($db, $query) or die('Error');
     echo "<p>Nuevo comentario ";
     echo mysqli_insert_id($db);

@@ -1,0 +1,32 @@
+* {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+table,
+th,
+td {
+    border: 1px solid;
+    text-align: center;
+    padding: 2px;
+    margin: 10px;
+    font-size: large;
+}
+
+tr:nth-child(even) {
+    background-color: white;
+}
+
+table {
+    background-color: antiquewhite;
+}
+
+tr:hover {
+    background-color: goldenrod;
+    color: black;
+    font-size: larger;
+}
+
+img {
+    height: 275;
+    width: 200;
+}

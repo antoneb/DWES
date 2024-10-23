@@ -6,6 +6,10 @@ $result = mysqli_query($db, $query) or die('Query error');
 
 <html>
 
+<head>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+
 <body>
     <h1>Conexion establecida</h1>
     <table>
