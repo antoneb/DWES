@@ -1,0 +1,42 @@
+* {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+table,
+th,
+td {
+    border: 1px solid;
+    text-align: center;
+    padding: 2px;
+    margin: 10px;
+    font-size: large;
+}
+
+tr:nth-child(even) {
+    background-color: white;
+}
+
+table {
+    background-color: antiquewhite;
+}
+
+tr:hover {
+    background-color: goldenrod;
+    color: black;
+    font-size: larger;
+    opacity: 1;
+}
+
+img {
+    height: 275;
+    width: 200;
+    opacity: .5;
+    transition: opacity .5s ease-out;
+    -moz-transition: opacity .5s ease-out;
+    -webkit-transition: opacity .5s ease-out;
+    -o-transition: opacity .5s ease-out;
+}
+
+img:hover {
+    opacity: 1;
+}
