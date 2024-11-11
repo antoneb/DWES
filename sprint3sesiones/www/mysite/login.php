@@ -17,10 +17,10 @@ $db = mysqli_connect('localhost', 'root', '1234', 'dbLibrosAnton') or die('Fail'
  */
 
 ?>
-
+<script></script>
 <body>
     <h1>Login</h1>
-    <form action="login.php" method="post">
+    <form name="loginForm" action="login.php" onsubmit="return validateForm()" method="post">
         <input name="f_email" type="text" placeholder="e-mail"><br>
         <input name="f_password" type="password" placeholder="Contraseña"><br>
         <input type="submit" value="Iniciar sesión">
@@ -53,5 +53,18 @@ if (!$_POST['f_email'] || !$_POST['f_password']) {
 }
 
 ?>
-
+<script>
+function validateForm() {
+  let x = document.forms["loginForm"]["f_email"].value;
+  if (x == "") {
+    alert("Campo mail vacio");
+    return false;
+  }
+  let y = document.forms["loginForm"]["f_password"].value;
+  if (y == "") {
+    alert("Campo contraseña vacio");
+    return false;
+  }
+}
+</script>
 </html>
