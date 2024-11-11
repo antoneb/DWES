@@ -18,8 +18,8 @@ $db = mysqli_connect('localhost', 'root', '1234', 'dbLibrosAnton') or die('Fail'
     $result = mysqli_query($db, $query) or die('Query error');
     $only_row = mysqli_fetch_array($result);
     echo '<h1>' . $only_row['titulo'] . '</h1>';
-
     ?>
+    <h3><a href="./main.php">Home</a> <a href="./logout.php">Cerrar sesion</a></h3>
     <img src="<?php echo $only_row[2] ?>" alt="portada" width="300" height="450">
     <?php
 

@@ -12,6 +12,8 @@ $result = mysqli_query($db, $query) or die('Query error');
 
 <body>
     <h1>Conexion establecida</h1>
+    <h3> <a href="./login.php">Login</a> <a href="./register.php">Registro</a> </h3>
+    <h3><a href="./logout.php">Cerrar sesion</a></h3>
     <table>
         <tr>
             <th>Portada</th>
