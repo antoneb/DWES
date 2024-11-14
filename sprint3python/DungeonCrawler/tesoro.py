@@ -5,7 +5,7 @@ class Tesoro:
     def __init__(self):
         self.beneficios = ["ataque", "defensa", "salud"]
 
-    def encontrar_tesoro(self,heroe):
+    def encontrar_tesoro(self, heroe):
         num = random.randint(0, 2)
         beneficios = self.beneficios
         if num == 0:

@@ -28,7 +28,7 @@ class Dungeon:
         while nivel <= len(self.malos) and self.heroe.salud > 0:
             # mientras haya malos en la mazmorra y nuestro heroe siga con vida, jugamos: "subimos de nivel"
             print("te encuentras con un " + (self.malos[(nivel - 1)].nombre))
-            print (nivel)
+            print(nivel)
             self.enfrentar_enemigo(self.malos[(nivel - 1)])
             nivel = nivel + 1
 

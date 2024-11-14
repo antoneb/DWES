@@ -15,7 +15,6 @@ class Heroe:
         print("Salud: " + str(self.salud) + "/" + str(self.saludMax))
         print("Curacion:" + str(self.cura))
         return "+++++++++++++++++++++"
-       
 
     def atacar(self, maloso):
         print(self.nombre + " ataca a " + maloso.nombre)
@@ -49,7 +48,7 @@ class Heroe:
         print("La Defensa de " + self.nombre + " vuelve a la normalidad")
 
     def esta_vivo(self):
-        if self.salud == 0 or self.salud<0:
+        if self.salud == 0 or self.salud < 0:
             return False
         else:
             return True
