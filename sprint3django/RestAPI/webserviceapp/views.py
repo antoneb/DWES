@@ -1,0 +1,7 @@
+from django.shortcuts import render
+from django.http import HttpResponse
+
+# Create your views here.
+
+def pagina_de_prueba(request):
+	return HttpResponse("<h2>Que pasa tarantola</h2>")
