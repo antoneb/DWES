@@ -1,4 +1,9 @@
 config.json
-sprint3django/entorno_django
+sprint3django/RestAPI/entorno_django
+sprint3django/RestAPI/webserviceapp
 sprint3django/RestAPI/RestAPI/__pycache__
 sprint3django/webserviceapp/__pycache__
+proyectoSegundo/entorno__proyecto
+proyectoSegundo/segundo_trimestre/segundo_trimestre/__pycache__
+proyectoSegundo/segundo_trimestre/webserviceapp/__pycache__
+proyectoSegundo/segundo_trimestre/webserviceapp/migrations
