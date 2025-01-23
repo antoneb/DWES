@@ -11,6 +11,7 @@ from django.db import models
 
 
 class Tusuarios(AbstractUser):
+    biografia = models.TextField()
     TIPO_USUARIO = [
         ('organizador', 'Organizador'),
         ('asistente', 'Asistente')
@@ -19,10 +20,7 @@ class Tusuarios(AbstractUser):
 
     def __str__(self):
         return self.first_name
-    
-    class Meta:
-        managed = False
-        db_table = 'tUsuarios'
+
         
         
 class Teventos(models.Model):
@@ -32,10 +30,7 @@ class Teventos(models.Model):
     asistentes_maximos = models.CharField(max_length=200, blank=True, null=True)
     descripcion = models.TextField()
     organizador = models.ForeignKey('Tusuarios',models.DO_NOTHING)
-    
-    class Meta:
-        managed = False
-        db_table = 'tEventos'
+
         
         
 class Tcomentarios(models.Model):
@@ -44,12 +39,9 @@ class Tcomentarios(models.Model):
     usuario = models.ForeignKey('Tusuarios', models.DO_NOTHING)
     fechapost = models.DateTimeField(db_column='fecha_comentario', blank=True, null=True)  # Field name made lowercase.
 
-    class Meta:
-        managed = False
-        db_table = 'tComentarios'
 
     def __str__(self):
-        return self.evento
+        return self.comentario
 
 class Treservas(models.Model):
     evento = models.ForeignKey('Teventos', models.DO_NOTHING)
@@ -64,8 +56,5 @@ class Treservas(models.Model):
 
     def __str__(self):
         return self.evento
-    
-    class Meta:
-        managed = False
-        db_table = 'tReservas'
+
 
