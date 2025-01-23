@@ -1,3 +1,4 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 # This is an auto-generated Django model module.
@@ -9,12 +10,7 @@ from django.db import models
 # Feel free to rename the models, but don't rename db_table values or field names.
 
 
-class Tusuarios(models.Model):
-    nombre = models.CharField(max_length=50, blank=True, null=True)
-    apell = models.CharField(max_length=50, blank=True, null=True)
-    email = models.CharField(unique=True, max_length=200, blank=True, null=True)
-    pass_field = models.CharField(db_column='pass', max_length=200, blank=True, null=True) # Field renamed because it was a Python reserved word.
-    biografia = models.TextField(blank=True,null=True)
+class Tusuarios(AbstractUser):
     TIPO_USUARIO = [
         ('organizador', 'Organizador'),
         ('asistente', 'Asistente')
@@ -22,7 +18,7 @@ class Tusuarios(models.Model):
     tipo = models.CharField(max_length=20, choices=TIPO_USUARIO, default='asistente')
 
     def __str__(self):
-        return self.nombre
+        return self.first_name
     
     class Meta:
         managed = False
@@ -52,10 +48,12 @@ class Tcomentarios(models.Model):
         managed = False
         db_table = 'tComentarios'
 
+    def __str__(self):
+        return self.evento
 
 class Treservas(models.Model):
     evento = models.ForeignKey('Teventos', models.DO_NOTHING)
-    usuario = models.ForeignKey('Tusuarios', models.DO_NOTHING)
+    usuario = models.ForeignKey('Tusuarios', models.DO_NOTHING,)
     entradas_reservadas = models.IntegerField()
     TIPO_RESERVA = [
         ('pendiente', 'Pendiente'),
@@ -65,7 +63,7 @@ class Treservas(models.Model):
     tipo = models.CharField(max_length=20, choices=TIPO_RESERVA, default='pendiente')
 
     def __str__(self):
-        return self.nombre
+        return self.evento
     
     class Meta:
         managed = False
