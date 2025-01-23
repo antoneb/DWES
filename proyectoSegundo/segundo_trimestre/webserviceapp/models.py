@@ -31,6 +31,8 @@ class Teventos(models.Model):
     descripcion = models.TextField()
     organizador = models.ForeignKey('Tusuarios',models.DO_NOTHING)
 
+    def __str__(self):
+        return "["+self.organizador.first_name+"] "+self.titulo
         
         
 class Tcomentarios(models.Model):
@@ -41,7 +43,7 @@ class Tcomentarios(models.Model):
 
 
     def __str__(self):
-        return self.comentario
+        return "["+self.usuario.first_name+"] ["+self.evento.titulo+"] "+self.comentario
 
 class Treservas(models.Model):
     evento = models.ForeignKey('Teventos', models.DO_NOTHING)
@@ -55,6 +57,6 @@ class Treservas(models.Model):
     tipo = models.CharField(max_length=20, choices=TIPO_RESERVA, default='pendiente')
 
     def __str__(self):
-        return self.evento
+        return self.evento.titulo
 
 
