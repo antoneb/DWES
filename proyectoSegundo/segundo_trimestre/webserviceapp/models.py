@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+
 # This is an auto-generated Django model module.
 # You'll have to do the following manually to clean this up:
 #   * Rearrange models' order
@@ -21,42 +22,39 @@ class Tusuarios(AbstractUser):
     def __str__(self):
         return self.first_name
 
-        
-        
+
 class Teventos(models.Model):
     titulo = models.CharField(max_length=100, blank=True, null=True)
     imagen = models.CharField(max_length=200, blank=True, null=True)
     calendario = models.DateTimeField(db_column='calendario_evento', blank=True, null=True)
     asistentes_maximos = models.CharField(max_length=200, blank=True, null=True)
     descripcion = models.TextField()
-    organizador = models.ForeignKey('Tusuarios',models.DO_NOTHING)
+    organizador = models.ForeignKey('Tusuarios', models.DO_NOTHING)
 
     def __str__(self):
-        return "["+self.organizador.first_name+"] "+self.titulo
-        
-        
+        return "[" + self.organizador.first_name + "] " + self.titulo
+
+
 class Tcomentarios(models.Model):
     comentario = models.CharField(max_length=2000, blank=True, null=True)
     evento = models.ForeignKey('Teventos', models.DO_NOTHING)
     usuario = models.ForeignKey('Tusuarios', models.DO_NOTHING)
     fechapost = models.DateTimeField(db_column='fecha_comentario', blank=True, null=True)  # Field name made lowercase.
 
-
     def __str__(self):
-        return "["+self.usuario.first_name+"] ["+self.evento.titulo+"] "+self.comentario
+        return "[" + self.usuario.first_name + "] [" + self.evento.titulo + "] " + self.comentario
+
 
 class Treservas(models.Model):
     evento = models.ForeignKey('Teventos', models.DO_NOTHING)
-    usuario = models.ForeignKey('Tusuarios', models.DO_NOTHING,)
+    usuario = models.ForeignKey('Tusuarios', models.DO_NOTHING, )
     entradas_reservadas = models.IntegerField()
     TIPO_RESERVA = [
         ('pendiente', 'Pendiente'),
         ('confirmada', 'Confirmada'),
-        ('cancelada','cancelada')
+        ('cancelada', 'cancelada')
     ]
     tipo = models.CharField(max_length=20, choices=TIPO_RESERVA, default='pendiente')
 
     def __str__(self):
         return self.evento.titulo
-
-
