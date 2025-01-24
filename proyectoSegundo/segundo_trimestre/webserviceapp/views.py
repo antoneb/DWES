@@ -31,8 +31,8 @@ def listar_eventos(self):
 
 
 @csrf_exempt
-def info_evento_individual(request, idevento):
-    evento = Teventos.objects.get(id=idevento)
+def info_evento_individual(request, id):
+    evento = Teventos.objects.get(id=id)
     data = {"id": evento.id, "titulo": evento.titulo, "imagen": evento.imagen,
             "calendario": evento.calendario, "asistentes_maximos": evento.asistentes_maximos,
             "descripcion": evento.descripcion,
@@ -87,14 +87,17 @@ def eliminar_evento(request, id):
 # GESTION DE RESERVAS
 # ------------------------------
 
+
 @csrf_exempt
 # @login_required() PERO puede ser org o asistente
-def listar_reservas(request, idusuario):
+def listar_reservas(request, id):
     if request.method == "GET":
         data = json.loads(request.body)
+        #crea
+        reservas_usuario = {}
         reservas = Treservas.objects.getAll()
+        for r in reservas:
+            if (r.usuario.id == id):
+                reservas_usuario.add(r)
 
-        data = [{"id": p.id, "titulo": p.evento.titulo, "calendario": p.evento.calendario,
-                 "usuario": p.usuario.first_name, "estado_reserva":p.tipo,
-                 "entradas_reservadas": p.entradas_reservadas} for p in reservas]
-
+        return JsonResponse(reservas_usuario)

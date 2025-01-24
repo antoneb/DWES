@@ -23,4 +23,11 @@ urlpatterns = [
     path("prueba", views.pagina_de_prueba),
     path("listar_eventos", views.listar_eventos),
     path('eventos/<int:id>/', views.info_evento_individual),
+    path('crear_evento', views.crear_evento),
+    path('actualizar_evento/<int:id>', views.actualizar_evento),
+    path('eliminar_evento/<int:id>', views.eliminar_evento),
+
+
+    path('listar_reservas/<int:id>', views.listar_reservas),
+
 ]
