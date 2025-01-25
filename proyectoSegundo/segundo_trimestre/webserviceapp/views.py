@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-
+from django.contrib.auth import authenticate, login
 from .models import *
 import json
 
@@ -152,7 +152,10 @@ def eliminar_reserva(request, id):
                              "mensaje": "Reserva actualizada"})
 
 
-# CRUD COMENTARIOS
+# ----------------------
+# GESTION COMENTARIOS
+# ----------------------
+
 @csrf_exempt
 def listar_comentarios_evento(request, id):
     # @param id - id de evento del que queremos ver comentarios
@@ -166,8 +169,37 @@ def listar_comentarios_evento(request, id):
                 comentario_ind = {}
                 comentario_ind["id"] = r.id
                 comentario_ind["evento"] = r.evento.titulo
-                comentario_ind["comentador"] = r.usuario.first_name
+                comentario_ind["usuario"] = r.usuario.first_name
                 comentario_ind["comentario"] = r.comentario
                 lista_comentarios.append(comentario_ind)
 
         return JsonResponse(lista_comentarios, safe=False)
+
+
+@csrf_exempt
+def guardar_comentario(request, id):
+    # @param id - id de evento que vamos a comentar
+    if request.method != "POST":
+        return None
+    data = json.loads(request.body)
+    comentario = Tcomentarios()
+    comentario.comentario = data['nuevo_comentario']
+    comentario.evento = Tcomentarios.objects.get(id=id)
+    comentario.usuario = data["usuario"]
+    comentario.save()
+    return JsonResponse({"status": "ok"})
+
+# ----------------------
+# GESTION DE USUARIOS
+# ----------------------
+
+def login_usuario(request):
+    usuario = request.POST["username"]
+    contra = request.POST["password"]
+    user = authenticate(request,username=usuario,password=contra)
+    if user is not None:
+        login(request,user)
+        return JsonResponse({"status": "Login !!!!!!"})
+    else:
+        return JsonResponse({"status":"Login fallido"})
+
