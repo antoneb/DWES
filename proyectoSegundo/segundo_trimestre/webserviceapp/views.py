@@ -32,6 +32,7 @@ def listar_eventos(self):
 
 @csrf_exempt
 def info_evento_individual(request, id):
+    # @param id - id de evento para mostrar su informacion
     evento = Teventos.objects.get(id=id)
     data = {"id": evento.id, "titulo": evento.titulo, "imagen": evento.imagen,
             "calendario": evento.calendario, "asistentes_maximos": evento.asistentes_maximos,
@@ -59,6 +60,7 @@ def crear_evento(request):
 # @login_required() !!comprobar tipo=organizador
 @csrf_exempt
 def actualizar_evento(request, id):
+    # @param id - id de evento para actualizar
     if request.method in ["PUT", "PATCH"]:
         data = json.loads(request.body)
         evento = Teventos.objects.get(id=id)
@@ -76,6 +78,7 @@ def actualizar_evento(request, id):
 # @login_required() !!comprobar tipo=organizador
 @csrf_exempt
 def eliminar_evento(request, id):
+    # @param id - id de evento  para eliminar
     if request.method == "DELETE":
         evento = Teventos.objects.get(id=id)
         evento.delete()
@@ -88,10 +91,10 @@ def eliminar_evento(request, id):
 # ------------------------------
 
 
-
-#METODO GET !!!! @login_required() PERO puede ser org o asistente
+# METODO GET !!!! @login_required() PERO puede ser org o asistente
 @csrf_exempt
 def listar_reservas(request, id):
+    # @param id - id de usuario para ver sus reservas
     if request.method == "GET":
 
         reservas = Treservas.objects.all()
@@ -110,7 +113,8 @@ def listar_reservas(request, id):
 
         return JsonResponse(lista_reservas, safe=False)
 
-#METODO POST
+
+# METODO POST
 @csrf_exempt
 def crear_reserva(request):
     if request.method == "POST":
@@ -126,6 +130,7 @@ def crear_reserva(request):
 
 @csrf_exempt
 def actualizar_reserva(request, id):
+    # @param id - id de reserva para actualizar
     if request.method in ["PUT", "PATCH"]:
         data = json.loads(request.body)
         reserva = Treservas.objects.get(id=id)
@@ -139,6 +144,7 @@ def actualizar_reserva(request, id):
 
 @csrf_exempt
 def eliminar_reserva(request, id):
+    # @param id - id de reserva a eliminar
     if request.method == "DELETE":
         reserva = Treservas.objects.get(id=id)
         reserva.delete()
@@ -146,9 +152,10 @@ def eliminar_reserva(request, id):
                              "mensaje": "Reserva actualizada"})
 
 
-#CRUD COMENTARIOS
+# CRUD COMENTARIOS
 @csrf_exempt
-def listar_comentarios_evento(request,id):
+def listar_comentarios_evento(request, id):
+    # @param id - id de evento del que queremos ver comentarios
     if request.method == "GET":
 
         comentarios = Tcomentarios.objects.all()
