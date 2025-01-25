@@ -149,11 +149,11 @@ def eliminar_reserva(request, id):
         reserva = Treservas.objects.get(id=id)
         reserva.delete()
         return JsonResponse({"id": reserva.id, "usuario_reservador": reserva.usuario,
-                             "mensaje": "Reserva actualizada"})
+                             "mensaje": "Reserva eliminada"})
 
 
 # ----------------------
-# GESTION COMENTARIOS
+# GESTION DE COMENTARIOS
 # ----------------------
 
 @csrf_exempt
@@ -181,13 +181,15 @@ def guardar_comentario(request, id):
     # @param id - id de evento que vamos a comentar
     if request.method != "POST":
         return None
-    data = json.loads(request.body)
-    comentario = Tcomentarios()
-    comentario.comentario = data['nuevo_comentario']
-    comentario.evento = Tcomentarios.objects.get(id=id)
-    comentario.usuario = data["usuario"]
-    comentario.save()
+    else:
+        data = json.loads(request.body)
+        comentario = Tcomentarios()
+        comentario.comentario = data['nuevo_comentario']
+        comentario.evento = Tcomentarios.objects.get(id=id)
+        comentario.usuario = data["usuario"]
+        comentario.save()
     return JsonResponse({"status": "ok"})
+
 
 # ----------------------
 # GESTION DE USUARIOS
@@ -196,10 +198,9 @@ def guardar_comentario(request, id):
 def login_usuario(request):
     usuario = request.POST["username"]
     contra = request.POST["password"]
-    user = authenticate(request,username=usuario,password=contra)
+    user = authenticate(request, username=usuario, password=contra)
     if user is not None:
-        login(request,user)
+        login(request, user)
         return JsonResponse({"status": "Login !!!!!!"})
     else:
-        return JsonResponse({"status":"Login fallido"})
-
+        return JsonResponse({"status": "Login fallido"})
