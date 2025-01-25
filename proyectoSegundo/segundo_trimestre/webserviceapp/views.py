@@ -88,16 +88,79 @@ def eliminar_evento(request, id):
 # ------------------------------
 
 
+
+#METODO GET !!!! @login_required() PERO puede ser org o asistente
 @csrf_exempt
-# @login_required() PERO puede ser org o asistente
 def listar_reservas(request, id):
     if request.method == "GET":
-        data = json.loads(request.body)
-        #crea
-        reservas_usuario = {}
-        reservas = Treservas.objects.getAll()
-        for r in reservas:
-            if (r.usuario.id == id):
-                reservas_usuario.add(r)
 
-        return JsonResponse(reservas_usuario)
+        reservas = Treservas.objects.all()
+        lista_reservas = []
+
+        for r in reservas:
+            if r.usuario.id == id:
+                reserva_ind = {}
+                reserva_ind["id"] = r.id
+                reserva_ind["evento"] = r.evento.titulo
+                reserva_ind["organizador"] = r.evento.organizador.first_name
+                reserva_ind["usuario_reservante"] = r.usuario.first_name
+                reserva_ind["entradas_reservadas"] = r.entradas_reservadas
+                reserva_ind["estado_reserva"] = r.tipo
+                lista_reservas.append(reserva_ind)
+
+        return JsonResponse(lista_reservas, safe=False)
+
+#METODO POST
+@csrf_exempt
+def crear_reserva(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        reserva = Treservas.objects.create(
+            evento=data["evento"],
+            usuario=data["usuario"],
+            entradas_reservadas=data["entradas_reservadas"],
+            tipo=data["tipo"],
+        )
+        return JsonResponse({"id": reserva.id, "titulo": reserva.titulo, "mensaje": "reserva creada"})
+
+
+@csrf_exempt
+def actualizar_reserva(request, id):
+    if request.method in ["PUT", "PATCH"]:
+        data = json.loads(request.body)
+        reserva = Treservas.objects.get(id=id)
+        reserva.evento = data.get("evento", reserva.evento)
+        reserva.usuario = data.get("usuario", reserva.usuario.first_name)
+        reserva.entradas_reservadas = data.get("entradas_reservadas", reserva.entradas_reservadas)
+        reserva.save()
+        return JsonResponse({"id": reserva.id, "nombre_reserva": reserva.evento.titulo,
+                             "mensaje": "Reserva actualizada"})
+
+
+@csrf_exempt
+def eliminar_reserva(request, id):
+    if request.method == "DELETE":
+        reserva = Treservas.objects.get(id=id)
+        reserva.delete()
+        return JsonResponse({"id": reserva.id, "usuario_reservador": reserva.usuario,
+                             "mensaje": "Reserva actualizada"})
+
+
+#CRUD COMENTARIOS
+@csrf_exempt
+def listar_comentarios_evento(request,id):
+    if request.method == "GET":
+
+        comentarios = Tcomentarios.objects.all()
+        lista_comentarios = []
+
+        for r in comentarios:
+            if r.evento.id == id:
+                comentario_ind = {}
+                comentario_ind["id"] = r.id
+                comentario_ind["evento"] = r.evento.titulo
+                comentario_ind["comentador"] = r.usuario.first_name
+                comentario_ind["comentario"] = r.comentario
+                lista_comentarios.append(comentario_ind)
+
+        return JsonResponse(lista_comentarios, safe=False)
