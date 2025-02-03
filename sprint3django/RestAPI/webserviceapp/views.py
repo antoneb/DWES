@@ -14,6 +14,8 @@ def pagina_de_prueba(request):
 def devolver_libros(request):
     listaLibros = Tlibros.objects.all()
     respuesta_final = []
+
+
     for fila_sql in listaLibros:
         diccionario = {}
         diccionario["id"] = fila_sql.id
