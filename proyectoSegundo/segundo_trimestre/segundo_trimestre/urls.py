@@ -39,4 +39,5 @@ urlpatterns = [
     path("guardar_comentario/<int:id>", views.guardar_comentario),
 
     path("login_usuario", views.login_usuario),
+    path("crear_usuario", views.crear_usuario),
 ]

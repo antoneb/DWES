@@ -1,6 +1,8 @@
+import datetime
+
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-
+from datetime import datetime
 
 # This is an auto-generated Django model module.
 # You'll have to do the following manually to clean this up:
@@ -25,7 +27,7 @@ class Tusuarios(AbstractUser):
 class Teventos(models.Model):
     titulo = models.CharField(max_length=100, blank=True, null=True)
     imagen = models.CharField(max_length=200, blank=True, null=True)
-    calendario = models.DateTimeField(db_column='calendario_evento', blank=True, null=True)
+    calendario = models.DateTimeField(db_column='calendario_evento', blank=True, null=True, default=datetime.now())
     asistentes_maximos = models.CharField(max_length=200, blank=True, null=True)
     descripcion = models.TextField()
     organizador = models.ForeignKey('Tusuarios', models.DO_NOTHING)
