@@ -7,6 +7,10 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login
 
 from datetime import datetime
+
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
 from .models import *
 import json
 
@@ -30,7 +34,6 @@ def listar_eventos(self):
              "descripcion": p.descripcion,
              "organizador": p.organizador.first_name} for p in eventos]
     return JsonResponse(data, safe=False)
-
 
 @csrf_exempt
 def info_evento_individual(request, id):
@@ -217,7 +220,6 @@ def listar_comentarios_evento(request, id):
                 comentario_ind["usuario"] = r.usuario.first_name
                 comentario_ind["comentario"] = r.comentario
                 lista_comentarios.append(comentario_ind)
-
         return JsonResponse(lista_comentarios, safe=False)
 
 
@@ -261,16 +263,38 @@ def login_usuario(request):
 
 @csrf_exempt
 def crear_usuario(request):
+    # Sacamos el user model para crear el usuario mas tarde
+    Usuario = get_user_model()
+
+    lista_usuarios = Tusuarios.objects.all()
     data = json.loads(request.body)
 
-    usuario = data["username"]
+    nombre_usuario = data["username"]
     correo = data["email"]
     contra = data["password"]
+    nickname = data["first_name"]
 
-    user = User.objects.create_user(usuario, correo, contra)
-
-    if user is not None:
-        user.save()
-        return JsonResponse({"status": "Usuario registrado con exito"})
+    # si el usuario existe en lista_usuarios, registro fallido
+    if lista_usuarios.filter(username=nombre_usuario).exists():
+        return JsonResponse({"status": "Registro fallido (nombre de usuario en uso)"})
     else:
-        return JsonResponse({"status": "Registro fallido"})
+        Usuario.objects.create_user(username=nombre_usuario, email=correo, password=contra, first_name=nickname)
+        return JsonResponse({"status": "Usuario registrado con exito"})
+
+
+
+# ----------------------
+# Utilizando APIView
+# ----------------------
+
+# ----------------------
+# GESTION DE EVENTOS (APIVIEW)
+# ----------------------
+class ListarEventosAPIView(APIView):
+    def get(self, request):
+        eventos = Teventos.objects.all()
+        data = [{"id": p.id, "titulo": p.titulo, "imagen": p.imagen,
+                 "calendario": p.calendario, "asistentes_maximos": p.asistentes_maximos,
+                 "descripcion": p.descripcion,
+                 "organizador": p.organizador.first_name} for p in eventos]
+        return Response(data)

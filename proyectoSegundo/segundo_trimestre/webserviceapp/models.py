@@ -1,9 +1,9 @@
 import datetime
-
+from django.contrib.auth.models import User
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.conf import settings
 from datetime import datetime
-
 # This is an auto-generated Django model module.
 # You'll have to do the following manually to clean this up:
 #   * Rearrange models' order
@@ -30,7 +30,7 @@ class Teventos(models.Model):
     calendario = models.DateTimeField(db_column='calendario_evento', blank=True, null=True, default=datetime.now())
     asistentes_maximos = models.CharField(max_length=200, blank=True, null=True)
     descripcion = models.TextField()
-    organizador = models.ForeignKey('Tusuarios', models.DO_NOTHING)
+    organizador = models.ForeignKey(settings.AUTH_USER_MODEL, models.DO_NOTHING)
 
     def __str__(self):
         return "[" + self.organizador.first_name + "] " + self.titulo
@@ -39,7 +39,7 @@ class Teventos(models.Model):
 class Tcomentarios(models.Model):
     comentario = models.CharField(max_length=2000, blank=True, null=True)
     evento = models.ForeignKey('Teventos', models.DO_NOTHING)
-    usuario = models.ForeignKey('Tusuarios', models.DO_NOTHING)
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, models.DO_NOTHING)
     fechapost = models.DateTimeField(db_column='fecha_comentario', blank=True, null=True)  # Field name made lowercase.
 
     def __str__(self):
@@ -48,7 +48,7 @@ class Tcomentarios(models.Model):
 
 class Treservas(models.Model):
     evento = models.ForeignKey('Teventos', models.DO_NOTHING)
-    usuario = models.ForeignKey('Tusuarios', models.DO_NOTHING, )
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, models.DO_NOTHING, )
     entradas_reservadas = models.IntegerField()
     TIPO_RESERVA = [
         ('pendiente', 'Pendiente'),
