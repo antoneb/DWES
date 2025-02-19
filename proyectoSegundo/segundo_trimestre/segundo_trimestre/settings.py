@@ -31,18 +31,28 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'webserviceapp.apps.WebserviceappConfig',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'corsheaders',
+    'drf_yasg',
+    'webserviceapp.apps.WebserviceappConfig',
 ]
-
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+}
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -98,6 +108,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+]
 AUTH_USER_MODEL = 'webserviceapp.Tusuarios'
 
 # Internationalization
