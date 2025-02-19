@@ -1,3 +1,5 @@
+from http.client import responses
+
 from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -8,6 +10,9 @@ from django.contrib.auth import authenticate, login
 
 from datetime import datetime
 
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -34,6 +39,7 @@ def listar_eventos(self):
              "descripcion": p.descripcion,
              "organizador": p.organizador.first_name} for p in eventos]
     return JsonResponse(data, safe=False)
+
 
 @csrf_exempt
 def info_evento_individual(request, id):
@@ -282,7 +288,6 @@ def crear_usuario(request):
         return JsonResponse({"status": "Usuario registrado con exito"})
 
 
-
 # ----------------------
 # Utilizando APIView
 # ----------------------
@@ -290,7 +295,18 @@ def crear_usuario(request):
 # ----------------------
 # GESTION DE EVENTOS (APIVIEW)
 # ----------------------
+
 class ListarEventosAPIView(APIView):
+    @swagger_auto_schema(
+        operation_description="Lista eventos. Filtra por fecha u organizador",
+        manual_parameters=[
+            openapi.Parameter('fecha', openapi.IN_QUERY, description="Filtrar por fecha (YYYY-MM-DD)", format="date-time",
+                              type=openapi.TYPE_STRING),
+            openapi.Parameter('organizador', openapi.IN_QUERY, description="Filtrar por nombre de organizador", type=openapi.TYPE_STRING),
+        ],
+        responses={201: openapi.Response(description="Evento creado"),
+                   403: openapi.Response(description="No tienes permisos para crear eventos.")}
+    )
     def get(self, request):
         eventos = Teventos.objects.all()
         data = [{"id": p.id, "titulo": p.titulo, "imagen": p.imagen,
@@ -298,3 +314,295 @@ class ListarEventosAPIView(APIView):
                  "descripcion": p.descripcion,
                  "organizador": p.organizador.first_name} for p in eventos]
         return Response(data)
+
+
+class InfoEventoIndividualAPIView(APIView):
+    @swagger_auto_schema(
+        operation_description="Obtener informacion evento individual",
+        responses={200: openapi.Response("Informacion evento")},
+    )
+    def get(self, request, id):
+        try:
+            evento = Teventos.objects.get(id=id)
+            data = {
+                "id": evento.id,
+                "titulo": evento.titulo,
+                "imagen": evento.imagen,
+                "calendario": evento.calendario,
+                "asistentes_maximos": evento.asistentes_maximos,
+                "descripcion": evento.descripcion,
+                "organizador": evento.organizador.first_name
+            }
+            return Response(data)
+
+        except Teventos.DoesNotExist:
+            return Response({"detail": "No se ha encontrado un evento con ese id."}, status=status.HTTP_404_NOT_FOUND)
+
+
+class CrearEventoAPIView(APIView):
+    @swagger_auto_schema(
+        operation_description="Crea un nuevo evento.",
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                'titulo': openapi.Schema(type=openapi.TYPE_STRING, description='Título del evento'),
+                'descripcion': openapi.Schema(type=openapi.TYPE_STRING, description='Descripción del evento'),
+                'calendario': openapi.Schema(type=openapi.TYPE_STRING, format="date-time",
+                                             description='Fecha y hora del evento'),
+                'asistentes_maximos': openapi.Schema(type=openapi.TYPE_INTEGER,
+                                                     description='Capacidad máxima de asistentes'),
+                'organizador': openapi.Schema(type=openapi.TYPE_INTEGER, description='ID de usuario organizador')
+            },
+            required=['titulo', 'descripcion', 'calendario', 'asistentes_maximos']
+        ),
+        responses={201: openapi.Response(description="Evento creado"),
+                   403: openapi.Response(description="No tienes permisos para crear eventos.")}
+    )
+    def post(self, request):
+        try:
+            organizador = Tusuarios.objects.get(id=request.data.get('organizador'))
+
+            evento = Teventos.objects.create(
+                titulo=request.data.get('titulo'),
+                imagen=request.data.get('imagen'),
+                calendario=request.data.get('calendario'),
+                asistentes_maximos=request.data.get('asistentes_maximos'),
+                descripcion=request.data.get('descripcion'),
+                organizador=organizador
+            )
+            return Response({"id": evento.id, "titulo": evento.titulo, "mensaje": "creado"},
+                            status=status.HTTP_201_CREATED)
+
+        except Tusuarios.DoesNotExist:
+            return Response({"detail": "No se ha encontrado un usuario con ese id."}, status=status.HTTP_404_NOT_FOUND)
+
+        except KeyError as e:
+            return Response({"detail": f"campo vacio: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ActualizarEventoAPIView(APIView):
+    @swagger_auto_schema(
+        operation_description="Actualizar evento",
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                'titulo': openapi.Schema(type=openapi.TYPE_STRING, description='Título del evento'),
+                'descripcion': openapi.Schema(type=openapi.TYPE_STRING, description='Descripción del evento'),
+                'calendario': openapi.Schema(type=openapi.TYPE_STRING, format="date-time",
+                                             description='Fecha y hora del evento'),
+                'asistentes_maximos': openapi.Schema(type=openapi.TYPE_INTEGER,
+                                                     description='Capacidad máxima de asistentes'),
+                'organizador': openapi.Schema(type=openapi.TYPE_INTEGER, description='ID de usuario organizador')
+            },
+            required=['titulo']
+        ),
+        responses={200: openapi.Response("Evento actualizado")},
+    )
+    def put(self, request, id):
+        try:
+            evento = Teventos.objects.get(id=id)
+
+            organizador = Tusuarios.objects.get(id=request.data.get('organizador'))
+
+            evento.titulo = request.data.get('titulo')
+            evento.imagen = request.data.get('imagen')
+            evento.calendario = request.data.get('calendario')
+            evento.asistentes_maximos = request.data.get('asistentes_maximos')
+            evento.descripcion = request.data.get('descripcion')
+            evento.organizador = organizador
+
+            evento.save()
+
+            return Response({"id": evento.id, "titulo": evento.titulo, "mensaje": "Evento actualizado"})
+
+        except Teventos.DoesNotExist:
+            return Response({"detail": "No se ha encontrado un evento con ese id."}, status=status.HTTP_404_NOT_FOUND)
+
+        except Tusuarios.DoesNotExist:
+            return Response({"detail": "No se ha encontrado un organizador/usuario con ese id."},
+                            status=status.HTTP_404_NOT_FOUND)
+
+        except KeyError as e:
+            return Response({"detail": f"campo vacio: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class EliminarEventoAPIView(APIView):
+    @swagger_auto_schema(
+        operation_description="Elimina un evento",
+        responses={200: openapi.Response("Elimina un evento")},
+    )
+    def delete(self, request, id):
+        try:
+            evento = Teventos.objects.get(id=id)
+            evento.delete()
+            return Response({"id": evento.id, "titulo": evento.titulo, "mensaje": "Evento eliminado"})
+
+        except Teventos.DoesNotExist:
+            return Response({"detail": "No se ha encontrado un evento con ese id."}, status=status.HTTP_404_NOT_FOUND)
+
+
+# ----------------------
+# GESTION DE RESERVAS (APIVIEW)
+# ----------------------
+
+class ListarReservasAPIView(APIView):
+    def get(self, request, id):
+        reservas = Treservas.objects.filter(usuario_id=id)
+        lista_reservas = []
+
+        for reserva in reservas:
+            reserva_ind = {
+                "id": reserva.id,
+                "evento": reserva.evento.titulo,
+                "organizador": reserva.evento.organizador.first_name,
+                "usuario_reservante": reserva.usuario.first_name,
+                "entradas_reservadas": reserva.entradas_reservadas,
+                "estado_reserva": reserva.tipo
+            }
+            lista_reservas.append(reserva_ind)
+        return Response(lista_reservas)
+
+
+class CrearReservaAPIView(APIView):
+    def post(self, request):
+        try:
+
+            usuario_reserva = Tusuarios.objects.get(id=request.data.get('usuario'))
+            evento_reserva = Teventos.objects.get(id=request.data.get('reserva'))
+
+            reserva = Treservas.objects.create(
+                evento=evento_reserva,
+                usuario=usuario_reserva,
+                entradas_reservadas=request.data.get('entradas_reservadas'),
+                tipo=request.data.get('tipo_reserva')
+            )
+            return Response({"id": reserva.id, "titulo": reserva.evento.titulo, "mensaje": "reserva creada"},
+                            status=status.HTTP_201_CREATED)
+
+        except Tusuarios.DoesNotExist:
+            return Response({"detail": "No se ha encontrado un usuario con ese id."}, status=status.HTTP_404_NOT_FOUND)
+
+        except Teventos.DoesNotExist:
+            return Response({"detail": "No se ha encontrado un evento con ese id."}, status=status.HTTP_404_NOT_FOUND)
+
+        except KeyError as e:
+            return Response({"detail": f"Campo vacio: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ActualizarReservaAPIView(APIView):
+    def put(self, request, id):
+        try:
+
+            usuario_reserva = Tusuarios.objects.get(id=request.data.get('usuario'))
+            evento_reserva = Teventos.objects.get(id=request.data.get('evento'))
+
+            reserva = Treservas.objects.get(id=id)
+            reserva.evento = evento_reserva
+            reserva.usuario = usuario_reserva
+            reserva.entradas_reservadas = request.data.get("entradas_reservadas")
+            reserva.tipo = request.data.get("tipo_reserva")
+            reserva.save()
+
+            return Response(
+                {"id": reserva.id, "nombre_reserva": reserva.evento.titulo, "mensaje": "Reserva actualizada"})
+        except Treservas.DoesNotExist:
+            return Response({"detail": "No se ha encontrado una reserva con ese id."}, status=status.HTTP_404_NOT_FOUND)
+        except Tusuarios.DoesNotExist:
+            return Response({"detail": "No se ha encontrado un usuario con ese id."}, status=status.HTTP_404_NOT_FOUND)
+        except Teventos.DoesNotExist:
+            return Response({"detail": "No se ha encontrado un evento con ese id."}, status=status.HTTP_404_NOT_FOUND)
+        except KeyError as e:
+            return Response({"detail": f"Campo vacio: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class EliminarReservaAPIView(APIView):
+    def delete(self, request, id):
+        try:
+            reserva = Treservas.objects.get(id=id)
+            reserva.delete()
+            return Response({"mensaje": "Reserva eliminada"})
+        except Treservas.DoesNotExist:
+            return Response({"detail": "No se ha encontrado una reserva con ese id."},
+                            status=status.HTTP_404_NOT_FOUND)
+
+
+# ----------------------
+# GESTION DE COMENTARIOS (APIVIEW)
+# ----------------------
+class ListarComentariosEventoAPIView(APIView):
+    def get(self, request, id):
+        comentarios = Tcomentarios.objects.filter(evento_id=id)
+        lista_comentarios = []
+
+        for comentario in comentarios:
+            comentario_ind = {
+                "id": comentario.id,
+                "evento": comentario.evento.titulo,
+                "usuario": comentario.usuario.first_name,
+                "comentario": comentario.comentario
+            }
+            lista_comentarios.append(comentario_ind)
+        return Response(lista_comentarios)
+
+
+class GuardarComentarioAPIView(APIView):
+    def post(self, request, id):
+        try:
+            usuario_comenta = Tusuarios.objects.get(id=request.data.get('usuario_comenta'))
+            evento_comentado = Teventos.objects.get(id=request.data.get('evento_comentado'))
+
+            comentario = Tcomentarios.objects.create(
+                evento=evento_comentado,
+                usuario=usuario_comenta,
+                fechapost=request.data.get('fechapost'),
+                comentario=request.data.get('comentario')
+            )
+
+            return Response({"id": comentario.id, "titulo": comentario.evento.titulo, "mensaje": "comentario creado"},
+                            status=status.HTTP_201_CREATED)
+
+        except Tusuarios.DoesNotExist:
+            return Response({"detail": "No se ha encontrado un usuario con ese id."}, status=status.HTTP_404_NOT_FOUND)
+
+        except Teventos.DoesNotExist:
+            return Response({"detail": "No se ha encontrado un evento con ese id."}, status=status.HTTP_404_NOT_FOUND)
+
+        except KeyError as e:
+            return Response({"detail": f"Campo vacio: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+# ----------------------
+# GESTION DE USUARIOS (APIVIEW)
+# ----------------------
+class LoginUsuarioAPIView(APIView):
+    def post(self, request):
+
+        usuario = request.data.get("username")
+        contra = request.data.get("password")
+
+        user = authenticate(username=usuario, password=contra)
+
+        if user is not None:
+            login(request, user)
+            return Response({"status": "Login exitoso!"})
+        else:
+            return Response({"status": "Login fallido !"}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+class CrearUsuarioAPIView(APIView):
+    def post(self, request):
+        nombre_usuario = request.data.get("username")
+        correo = request.data.get("email")
+        contra = request.data.get("password")
+        nickname = request.data.get("first_name")
+
+        Usuario = get_user_model()
+
+        # Check if the username already exists
+        if Tusuarios.objects.filter(username=nombre_usuario).exists():
+            return Response({"status": "Registro fallido: nombre de usuario ya existente"},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        Usuario.objects.create_user(username=nombre_usuario, email=correo, password=contra, first_name=nickname)
+
+        return Response({"status": "Usuario registrado con exito"}, status=status.HTTP_201_CREATED)

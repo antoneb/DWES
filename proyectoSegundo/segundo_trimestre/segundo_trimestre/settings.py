@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
+    'drf_yasg',
     'webserviceapp.apps.WebserviceappConfig',
 ]
 REST_FRAMEWORK = {
