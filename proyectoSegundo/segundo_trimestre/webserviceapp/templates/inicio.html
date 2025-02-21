@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>hola</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/style.css' %}">
+</head>
+<body>
+<header>
+    <h1>Mi sitio web</h1>
+</header>
+<main>
+
+    {% block content %}
+
+    {% if user.is_authenticated %}
+
+    <p>Bienvenido {{user.username}}</p>
+    <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Log Out</button>
+    </form>
+
+    <ul>
+        {% for dato in listaDatos %}
+        <li>{{ dato.titulo }}: {{ dato.organizador }} <a href="./{{dato.id}}">
+            <button> + Info</button>
+        </a></li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>Por favor inicia sesión para poder acceder:</p>
+    <a href="{% url 'login' %}">Log In</a>
+    {% endif %}
+    {% endblock %}
+</main>
+<footer>
+    <p>&copy; 2025 Mi sitio</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ evento.titulo }}</title>
+</head>
+<body>
+
+<main>
+    <ul>
+        <li>Evento: {{ evento.titulo }}</li>
+        <li>Organizador: {{ evento.organizador }}</li>
+        <li>{{ evento.imagen }}</li>
+        <li>Fecha: {{ evento.calendario }}</li>
+        <li>Asistentes maximos: {{ evento.asistentes_maximos }}</li>
+        <li>Descripcion: {{ evento.descripcion }}</li>
+        <li>AAAAAAAAAAAAAAAAAAA: {{ request.user }}</li>
+    </ul>
+
+    <form action="/crear_reserva" method="POST" >
+        {% csrf_token %}
+
+        {{ form }}
+        <input type="submit" value="Submit">
+    </form>
+
+</main>
+<footer>
+    <p>&copy; 2025 Mi sitio</p>
+</footer>
+</body>
+</html>

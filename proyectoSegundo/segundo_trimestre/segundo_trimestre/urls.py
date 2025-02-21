@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
+from django.contrib.auth.decorators import login_required
 from django.urls import path, include
 from webserviceapp import views
 from rest_framework.authtoken.views import ObtainAuthToken
@@ -41,14 +42,16 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('login/', auth_views.LoginView.as_view(), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('api-token-auth/', ObtainAuthToken.as_view(), name='api_token_auth'),
+
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-
-
+    path('', views.ListarEventosAPIView.as_view(), name='inicio'),
     # APIView
-    path('eventos/', views.ListarEventosAPIView.as_view(), name='listar_eventos'),
+    path('eventos', views.ListarEventosAPIView.as_view(), name='listar_eventos'),
     path('eventos/<int:id>/', views.InfoEventoIndividualAPIView.as_view(), name='info_evento_individual'),
     path('crear_evento', views.CrearEventoAPIView.as_view(), name='crear_evento'),
     path('actualizar_evento/<int:id>', views.ActualizarEventoAPIView.as_view(), name='actualizar_evento'),

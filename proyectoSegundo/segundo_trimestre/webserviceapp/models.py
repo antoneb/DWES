@@ -53,7 +53,7 @@ class Treservas(models.Model):
     TIPO_RESERVA = [
         ('pendiente', 'Pendiente'),
         ('confirmada', 'Confirmada'),
-        ('cancelada', 'cancelada')
+        ('cancelada', 'Cancelada')
     ]
     tipo = models.CharField(max_length=20, choices=TIPO_RESERVA, default='pendiente')
 

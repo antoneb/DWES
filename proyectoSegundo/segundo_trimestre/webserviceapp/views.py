@@ -13,9 +13,11 @@ from datetime import datetime
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
+from rest_framework.permissions import BasePermission
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from .forms import formularioReserva
 from .models import *
 import json
 
@@ -291,6 +293,10 @@ def crear_usuario(request):
 # ----------------------
 # Utilizando APIView
 # ----------------------
+class EsAdmin(BasePermission):
+    def has_permission(self, request, view):
+        return request.user and request.user.is_staff
+
 
 # ----------------------
 # GESTION DE EVENTOS (APIVIEW)
@@ -300,20 +306,25 @@ class ListarEventosAPIView(APIView):
     @swagger_auto_schema(
         operation_description="Lista eventos. Filtra por fecha u organizador",
         manual_parameters=[
-            openapi.Parameter('fecha', openapi.IN_QUERY, description="Filtrar por fecha (YYYY-MM-DD)", format="date-time",
+            openapi.Parameter('fecha', openapi.IN_QUERY, description="Filtrar por fecha (YYYY-MM-DD)",
+                              format="date-time",
                               type=openapi.TYPE_STRING),
-            openapi.Parameter('organizador', openapi.IN_QUERY, description="Filtrar por nombre de organizador", type=openapi.TYPE_STRING),
+            openapi.Parameter('organizador', openapi.IN_QUERY, description="Filtrar por nombre de organizador",
+                              type=openapi.TYPE_STRING),
         ],
         responses={201: openapi.Response(description="Evento creado"),
                    403: openapi.Response(description="No tienes permisos para crear eventos.")}
     )
     def get(self, request):
         eventos = Teventos.objects.all()
+
         data = [{"id": p.id, "titulo": p.titulo, "imagen": p.imagen,
                  "calendario": p.calendario, "asistentes_maximos": p.asistentes_maximos,
                  "descripcion": p.descripcion,
                  "organizador": p.organizador.first_name} for p in eventos]
-        return Response(data)
+
+        # listaEventos = {"listaDatos" : data }
+        return render(request, "inicio.html", {"listaDatos": data})
 
 
 class InfoEventoIndividualAPIView(APIView):
@@ -321,9 +332,12 @@ class InfoEventoIndividualAPIView(APIView):
         operation_description="Obtener informacion evento individual",
         responses={200: openapi.Response("Informacion evento")},
     )
+    # Si llega a través de un get, ejecutamos el codigo inferior
+    # declararemos aquí el form para asi utilizar la misma "pagina" (plantilla html) tanto para mostrar la informacion de un evento individual como para realizar las reservas de este
     def get(self, request, id):
         try:
             evento = Teventos.objects.get(id=id)
+            form = formularioReserva(request.POST)
             data = {
                 "id": evento.id,
                 "titulo": evento.titulo,
@@ -333,7 +347,7 @@ class InfoEventoIndividualAPIView(APIView):
                 "descripcion": evento.descripcion,
                 "organizador": evento.organizador.first_name
             }
-            return Response(data)
+            return render(request, "detalle.html", {"evento": data, "form": form})
 
         except Teventos.DoesNotExist:
             return Response({"detail": "No se ha encontrado un evento con ese id."}, status=status.HTTP_404_NOT_FOUND)
@@ -359,7 +373,9 @@ class CrearEventoAPIView(APIView):
                    403: openapi.Response(description="No tienes permisos para crear eventos.")}
     )
     def post(self, request):
+        permission_classes = [EsAdmin]
         try:
+
             organizador = Tusuarios.objects.get(id=request.data.get('organizador'))
 
             evento = Teventos.objects.create(
@@ -446,6 +462,15 @@ class EliminarEventoAPIView(APIView):
 # ----------------------
 
 class ListarReservasAPIView(APIView):
+    @swagger_auto_schema(
+        operation_description="Lista reservas realizadas por un usuario",
+        manual_parameters=[
+            openapi.Parameter('estado_reserva', openapi.IN_QUERY, description="Filtrar por estado de reserva",
+                              type=openapi.TYPE_STRING),
+        ],
+        responses={201: openapi.Response(description="Reservas listadas con exito"),
+                   403: openapi.Response(description="No tienes permisos para listar reservas.")}
+    )
     def get(self, request, id):
         reservas = Treservas.objects.filter(usuario_id=id)
         lista_reservas = []
@@ -463,33 +488,65 @@ class ListarReservasAPIView(APIView):
         return Response(lista_reservas)
 
 
+
 class CrearReservaAPIView(APIView):
+    @swagger_auto_schema(
+        operation_description="Crea una nueva reserva.",
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                'entradas_reservadas': openapi.Schema(type=openapi.TYPE_INTEGER,
+                                                      description='Entradas que desea reservar el usuario'),
+            },
+            required=['entradas_reservadas']
+        ),
+        responses={201: openapi.Response(description="Reserva creada"),
+                   403: openapi.Response(description="No tienes permisos para crear reservas.")}
+    )
+    @login_required
     def post(self, request):
-        try:
+        if request.method == "POST":
+            # try:
 
-            usuario_reserva = Tusuarios.objects.get(id=request.data.get('usuario'))
-            evento_reserva = Teventos.objects.get(id=request.data.get('reserva'))
+            usuario_reserva = Tusuarios.objects.get(id=1)
+            evento_reserva = Teventos.objects.get(id=1)
 
-            reserva = Treservas.objects.create(
-                evento=evento_reserva,
-                usuario=usuario_reserva,
-                entradas_reservadas=request.data.get('entradas_reservadas'),
-                tipo=request.data.get('tipo_reserva')
-            )
-            return Response({"id": reserva.id, "titulo": reserva.evento.titulo, "mensaje": "reserva creada"},
-                            status=status.HTTP_201_CREATED)
+            form = formularioReserva(request.POST)
 
-        except Tusuarios.DoesNotExist:
-            return Response({"detail": "No se ha encontrado un usuario con ese id."}, status=status.HTTP_404_NOT_FOUND)
+            if form.is_valid():
 
-        except Teventos.DoesNotExist:
-            return Response({"detail": "No se ha encontrado un evento con ese id."}, status=status.HTTP_404_NOT_FOUND)
+                #form = form.cleaned_data["form"]
 
-        except KeyError as e:
-            return Response({"detail": f"Campo vacio: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
+                reserva = Treservas.objects.create(
+                    evento=evento_reserva,
+                    usuario=usuario_reserva,
+                    entradas_reservadas=request.data.get('entradas_reservadas'),
+                )
+            return render(request, 'detalle.html', {"form": form})
+
+        # except Tusuarios.DoesNotExist:
+        #    return Response({"detail": "No se ha encontrado un usuario con ese id."},
+        #                    status=status.HTTP_404_NOT_FOUND)
+        # except Teventos.DoesNotExist:
+        #    return Response({"detail": "No se ha encontrado un evento con ese id."},
+        #                    status=status.HTTP_404_NOT_FOUND)
+        # except KeyError as e:
+        #    return Response({"detail": f"Campo vacio: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ActualizarReservaAPIView(APIView):
+    @swagger_auto_schema(
+        operation_description="Actualizar reserva",
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                'entradas_reservadas': openapi.Schema(type=openapi.TYPE_INTEGER, description='Entradas a reservar'),
+                'tipo_reserva': openapi.Schema(type=openapi.TYPE_INTEGER, description='Estado de la reserva'),
+            },
+            required=['entradas_reservadas']
+        ),
+        responses={200: openapi.Response("Evento actualizado")},
+    )
     def put(self, request, id):
         try:
 
@@ -516,6 +573,10 @@ class ActualizarReservaAPIView(APIView):
 
 
 class EliminarReservaAPIView(APIView):
+    @swagger_auto_schema(
+        operation_description="Elimina una reserva",
+        responses={200: openapi.Response("Elimina una reserva")},
+    )
     def delete(self, request, id):
         try:
             reserva = Treservas.objects.get(id=id)
@@ -529,7 +590,17 @@ class EliminarReservaAPIView(APIView):
 # ----------------------
 # GESTION DE COMENTARIOS (APIVIEW)
 # ----------------------
+
 class ListarComentariosEventoAPIView(APIView):
+    @swagger_auto_schema(
+        operation_description="Lista comentarios realizadas en un evento",
+        manual_parameters=[
+            openapi.Parameter('evento', openapi.IN_QUERY, description="Filtrar por evento",
+                              type=openapi.TYPE_STRING),
+        ],
+        responses={201: openapi.Response(description="Reservas listadas con exito"),
+                   403: openapi.Response(description="No tienes permisos para listar reservas.")}
+    )
     def get(self, request, id):
         comentarios = Tcomentarios.objects.filter(evento_id=id)
         lista_comentarios = []
@@ -546,6 +617,19 @@ class ListarComentariosEventoAPIView(APIView):
 
 
 class GuardarComentarioAPIView(APIView):
+    @swagger_auto_schema(
+        operation_description="Crea un nuevo comentario.",
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                'entradas_reservadas': openapi.Schema(type=openapi.TYPE_INTEGER,
+                                                      description='Entradas que desea reservar el usuario'),
+            },
+            required=['entradas_reservadas']
+        ),
+        responses={201: openapi.Response(description="Reserva creada"),
+                   403: openapi.Response(description="No tienes permisos para crear reservas.")}
+    )
     def post(self, request, id):
         try:
             usuario_comenta = Tusuarios.objects.get(id=request.data.get('usuario_comenta'))
